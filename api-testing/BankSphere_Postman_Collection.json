@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "a8910293-8b7c-4d1e-9a00-102938475610",
+		"name": "BankSphere API Testing Collection",
+		"description": "Comprehensive REST API Test Suite for BankSphere Online Banking Application including Authentication, Accounts, Fund Transfers, Beneficiaries, and Bill Payments.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "POST Customer Login - Success",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"kalyan@banksphere.com\",\n  \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Customer Login - Invalid Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"kalyan@banksphere.com\",\n  \"password\": \"WrongPassword!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Admin Login - Success",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin@123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Accounts & Balances",
+			"item": [
+				{
+					"name": "GET User Accounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/CUST1001",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"CUST1001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Specific Account Balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/ACC4521/balance",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"ACC4521",
+								"balance"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fund Transfers",
+			"item": [
+				{
+					"name": "POST Fund Transfer - Success",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fromAccount\": \"ACC4521\",\n  \"toAccount\": \"100012345678\",\n  \"amount\": 5000,\n  \"description\": \"Rent Payment\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transfers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Fund Transfer - Insufficient Balance (Negative Test)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fromAccount\": \"ACC4521\",\n  \"toAccount\": \"100012345678\",\n  \"amount\": 999999,\n  \"description\": \"Excess Transfer\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transfers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Fund Transfer - Exceed 50k Limit (Negative Test)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fromAccount\": \"ACC4521\",\n  \"toAccount\": \"100012345678\",\n  \"amount\": 60000,\n  \"description\": \"High Amount\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transfers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transfers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		}
+	]
+}

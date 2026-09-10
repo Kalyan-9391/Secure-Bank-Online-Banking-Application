@@ -1,0 +1,16 @@
+TC_ID,Module,Scenario,Test_Data,Expected_Result,Actual_Result,Status
+TC_AUTH_001,Login,Valid customer login,kalyan@banksphere.com / Password123!,Dashboard loaded with customer profile,Dashboard loaded successfully,PASS
+TC_AUTH_002,Login,Invalid password,kalyan@banksphere.com / WrongPass,Error displayed invalid credentials,Error displayed as expected,PASS
+TC_AUTH_003,Login,Account lockout on 3 failed attempts,kalyan@banksphere.com / Invalid x3,Account temporarily locked alert,Account locked alert triggered,PASS
+TC_AUTH_004,Login,Password mask toggle,Password123!,Toggles input between text and password,Toggles visually as expected,PASS
+TC_AUTH_005,Admin,Admin portal login,admin / Admin@123,Admin control center loaded,Admin dashboard loaded,PASS
+TC_DASH_001,Dashboard,Total balance sum,Savings ₹120450 + Current ₹40000,Displays net balance ₹160450.00,Calculates ₹160450.00 accurately,PASS
+TC_DASH_002,Dashboard,Balance privacy toggle,Eye icon toggle,Masks balances with ••••••••,Masked balances displayed,PASS
+TC_XFER_001,Transfer,Valid fund transfer,Amount ₹5000 / OTP 123456,Transfer succeeds balance updated,Transfer completed balance deducted,PASS
+TC_XFER_002,Transfer,Insufficient balance rejection,Amount ₹200000,Rejects transfer with balance alert,Rejected with insufficient balance alert,PASS
+TC_XFER_003,Transfer,Daily limit 50k capping,Amount ₹60000,Rejects transfer exceeding limit,Rejected with 50k limit alert,PASS
+TC_XFER_004,Transfer,Same account transfer block,From ACC4521 To ACC4521,Rejects same account transfer,Rejected with same account alert,PASS
+TC_XFER_005,Transfer,Invalid OTP code validation,OTP 999999,Rejects transfer invalid OTP alert,Rejected with invalid OTP message,PASS
+TC_BEN_001,Beneficiary,Add new beneficiary,Suresh Kumar / 100099887766,Beneficiary added to directory,Beneficiary card created,PASS
+TC_BILL_001,BillPay,Pay Electricity bill,CONS998811 / ₹1850,Payment succeeds balance deducted,Bill paid balance updated,PASS
+TC_STMT_001,Statements,Export CSV file,Export CSV button,Downloads BankSphere_Statement.csv,CSV file downloaded successfully,PASS
