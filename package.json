@@ -1,0 +1,32 @@
+{
+  "name": "banksphere-online-banking",
+  "version": "1.0.0",
+  "description": "BankSphere - Modern Online Banking Application & End-to-End QA Testing Suite",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "banking",
+    "fintech",
+    "qa-testing",
+    "selenium",
+    "testng",
+    "postman-api",
+    "sql-testing"
+  ],
+  "author": "Kalyan",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.1.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}

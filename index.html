@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BankSphere - Next-Gen Secure Online Banking Application</title>
+  <meta name="description" content="BankSphere is a state-of-the-art secure online banking platform and QA testing sandbox." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="./src/styles/main.css" />
+</head>
+<body class="dark-theme">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="navbar" id="main-navbar">
+    <div class="nav-container">
+      <div class="brand" id="brand-logo">
+        <div class="logo-icon"><i data-lucide="shield-check"></i></div>
+        <span class="brand-name">Bank<span class="gold-text">Sphere</span></span>
+        <span class="badge-demo">Demo & QA Sandbox</span>
+      </div>
+
+      <nav class="nav-menu" id="nav-menu" style="display: none;">
+        <button class="nav-link active" data-tab="dashboard-tab" id="nav-dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</button>
+        <button class="nav-link" data-tab="transfers-tab" id="nav-transfers"><i data-lucide="send"></i> Transfers</button>
+        <button class="nav-link" data-tab="beneficiaries-tab" id="nav-beneficiaries"><i data-lucide="users"></i> Beneficiaries</button>
+        <button class="nav-link" data-tab="bills-tab" id="nav-bills"><i data-lucide="receipt"></i> Bill Pay</button>
+        <button class="nav-link" data-tab="statements-tab" id="nav-statements"><i data-lucide="file-text"></i> Statements</button>
+        <button class="nav-link admin-nav-link" data-tab="admin-tab" id="nav-admin"><i data-lucide="shield-alert"></i> Admin Portal</button>
+      </nav>
+
+      <div class="nav-user-area" id="nav-user-area" style="display: none;">
+        <button class="notif-btn" id="notif-btn" title="Notifications">
+          <i data-lucide="bell"></i>
+          <span class="notif-badge">2</span>
+        </button>
+        <div class="user-profile-dropdown" id="user-profile-menu">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="User Avatar" class="user-avatar" />
+          <div class="user-info">
+            <span class="user-name" id="nav-user-name">Kalyan Vance</span>
+            <span class="user-role" id="nav-user-role">Premier Customer</span>
+          </div>
+          <button class="btn-logout" id="btn-logout" title="Logout"><i data-lucide="log-out"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- NOTIFICATIONS DRAWER -->
+  <div class="notif-drawer" id="notif-drawer">
+    <div class="notif-header">
+      <h3><i data-lucide="bell"></i> Notifications</h3>
+      <button class="close-notif" id="close-notif">&times;</button>
+    </div>
+    <div class="notif-list">
+      <div class="notif-item unread">
+        <div class="notif-icon success"><i data-lucide="arrow-down-left"></i></div>
+        <div class="notif-content">
+          <p class="notif-title">Salary Credit Received</p>
+          <p class="notif-desc">₹35,000 credited to Savings Account XXXX4521</p>
+          <span class="notif-time">Yesterday at 09:00 AM</span>
+        </div>
+      </div>
+      <div class="notif-item unread">
+        <div class="notif-icon warning"><i data-lucide="shield"></i></div>
+        <div class="notif-content">
+          <p class="notif-title">Security Alert</p>
+          <p class="notif-desc">Successful login from Chrome Windows (IP: 103.45.12.9)</p>
+          <span class="notif-time">2 hours ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="main-content" id="app-main">
+
+    <!-- 1. AUTHENTICATION VIEW (LOGIN / REGISTER) -->
+    <section id="auth-view" class="view-section active">
+      <div class="auth-container">
+        <div class="auth-card glass-panel">
+          <div class="auth-header">
+            <div class="auth-logo"><i data-lucide="lock"></i></div>
+            <h2>BankSphere Portal</h2>
+            <p>Secure Online Banking & QA Testing Platform</p>
+          </div>
+
+          <div class="auth-tabs">
+            <button class="auth-tab-btn active" id="tab-login-btn">Customer Login</button>
+            <button class="auth-tab-btn" id="tab-register-btn">Register</button>
+            <button class="auth-tab-btn" id="tab-admin-login-btn">Admin Portal</button>
+          </div>
+
+          <!-- LOGIN FORM -->
+          <form id="form-login" class="auth-form">
+            <div class="form-group">
+              <label for="login-username">Customer ID / Email</label>
+              <div class="input-wrapper">
+                <i data-lucide="user"></i>
+                <input type="text" id="login-username" placeholder="kalyan@banksphere.com or CUST1001" required value="kalyan@banksphere.com" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <div class="input-wrapper">
+                <i data-lucide="key"></i>
+                <input type="password" id="login-password" placeholder="••••••••••••" required value="Password123!" />
+                <button type="button" class="toggle-pwd" id="toggle-login-pwd"><i data-lucide="eye"></i></button>
+              </div>
+            </div>
+
+            <div class="form-row flex-between">
+              <label class="checkbox-label">
+                <input type="checkbox" id="remember-me" checked /> Remember Me
+              </label>
+              <a href="#" id="link-forgot-password" class="link-gold">Forgot Password?</a>
+            </div>
+
+            <div class="alert-box alert-error" id="login-error-alert" style="display: none;"></div>
+
+            <button type="submit" class="btn-primary btn-block" id="btn-submit-login">
+              <span>Secure Login</span> <i data-lucide="arrow-right"></i>
+            </button>
+
+            <div class="demo-credentials-box">
+              <p><strong><i data-lucide="info"></i> Quick Demo Credentials:</strong></p>
+              <p>Customer: <code>kalyan@banksphere.com</code> / <code>Password123!</code></p>
+              <p>Admin: <code>admin</code> / <code>Admin@123</code></p>
+            </div>
+          </form>
+
+          <!-- REGISTER FORM -->
+          <form id="form-register" class="auth-form" style="display: none;">
+            <div class="form-group">
+              <label for="reg-name">Full Legal Name</label>
+              <div class="input-wrapper">
+                <i data-lucide="user"></i>
+                <input type="text" id="reg-name" placeholder="John Doe" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-email">Email Address</label>
+              <div class="input-wrapper">
+                <i data-lucide="mail"></i>
+                <input type="email" id="reg-email" placeholder="john@example.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-phone">Mobile Phone</label>
+              <div class="input-wrapper">
+                <i data-lucide="phone"></i>
+                <input type="tel" id="reg-phone" placeholder="+91 9876543210" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-password">Create Password</label>
+              <div class="input-wrapper">
+                <i data-lucide="lock"></i>
+                <input type="password" id="reg-password" placeholder="At least 8 chars, 1 symbol" required />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary btn-block" id="btn-submit-register">Create Account</button>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. CUSTOMER DASHBOARD VIEW -->
+    <section id="dashboard-tab" class="view-section" style="display: none;">
+      <div class="dashboard-grid">
+        
+        <!-- WELCOME BANNER & TOTAL BALANCE -->
+        <div class="dashboard-hero glass-panel">
+          <div class="hero-left">
+            <span class="greeting-tag">Good Morning 👋</span>
+            <h1 class="user-greeting" id="dash-greeting-name">Kalyan Vance</h1>
+            <p class="subtitle">Account Status: <span class="badge-status active">Active & Verified</span></p>
+          </div>
+          <div class="hero-right">
+            <div class="total-balance-card">
+              <div class="balance-header">
+                <span>Net Available Balance</span>
+                <button class="privacy-toggle" id="toggle-balance-privacy" title="Toggle Balance Privacy">
+                  <i data-lucide="eye" id="eye-icon"></i>
+                </button>
+              </div>
+              <h2 class="balance-amount" id="total-balance-display">₹1,60,450.00</h2>
+              <div class="balance-footer">
+                <span><i data-lucide="shield-check"></i> FDIC / RBI Insured</span>
+                <span class="gold-text">Premier Tier</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCOUNTS OVERVIEW CARDS -->
+        <div class="section-title">
+          <h3><i data-lucide="credit-card"></i> Your Linked Accounts</h3>
+        </div>
+        <div class="accounts-grid" id="accounts-cards-container">
+          <div class="account-card glass-panel primary-card">
+            <div class="acc-top">
+              <span class="acc-type">Savings Account</span>
+              <span class="acc-badge">Primary</span>
+            </div>
+            <p class="acc-number">XXXX XXXX 4521</p>
+            <div class="acc-bottom">
+              <div>
+                <span class="label">Available Balance</span>
+                <h3 class="acc-balance" id="acc-4521-balance">₹1,20,450.00</h3>
+              </div>
+              <button class="btn-icon-round" title="Quick Transfer" onclick="switchTab('transfers-tab')"><i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
+
+          <div class="account-card glass-panel secondary-card">
+            <div class="acc-top">
+              <span class="acc-type">Current Account</span>
+              <span class="acc-badge info">Business</span>
+            </div>
+            <p class="acc-number">XXXX XXXX 7890</p>
+            <div class="acc-bottom">
+              <div>
+                <span class="label">Available Balance</span>
+                <h3 class="acc-balance" id="acc-7890-balance">₹40,000.00</h3>
+              </div>
+              <button class="btn-icon-round" title="Quick Transfer" onclick="switchTab('transfers-tab')"><i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK ACTIONS BAR -->
+        <div class="quick-actions-bar glass-panel">
+          <button class="action-btn" onclick="switchTab('transfers-tab')">
+            <div class="action-icon emerald"><i data-lucide="send"></i></div>
+            <span>Transfer Money</span>
+          </button>
+          <button class="action-btn" onclick="switchTab('beneficiaries-tab')">
+            <div class="action-icon cyan"><i data-lucide="user-plus"></i></div>
+            <span>Add Beneficiary</span>
+          </button>
+          <button class="action-btn" onclick="switchTab('bills-tab')">
+            <div class="action-icon gold"><i data-lucide="receipt"></i></div>
+            <span>Pay Bills</span>
+          </button>
+          <button class="action-btn" onclick="switchTab('statements-tab')">
+            <div class="action-icon purple"><i data-lucide="download"></i></div>
+            <span>Download Statement</span>
+          </button>
+        </div>
+
+        <!-- ANALYTICS CHART & RECENT TRANSACTIONS -->
+        <div class="dashboard-main-split">
+          <!-- CHART -->
+          <div class="chart-panel glass-panel">
+            <div class="panel-header">
+              <h3><i data-lucide="trending-up"></i> Monthly Financial Cashflow</h3>
+              <select id="chart-period-select" class="select-styled">
+                <option value="sep">September 2026</option>
+                <option value="aug">August 2026</option>
+              </select>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="cashflowChart"></canvas>
+            </div>
+          </div>
+
+          <!-- RECENT TRANSACTIONS TABLE -->
+          <div class="transactions-panel glass-panel">
+            <div class="panel-header">
+              <h3><i data-lucide="list"></i> Recent Transactions</h3>
+              <button class="btn-text" onclick="switchTab('statements-tab')">View All <i data-lucide="chevron-right"></i></button>
+            </div>
+            
+            <div class="table-controls">
+              <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="tx-search-input" placeholder="Search transactions..." />
+              </div>
+              <select id="tx-filter-type" class="select-styled">
+                <option value="ALL">All Types</option>
+                <option value="Credit">Credit Only</option>
+                <option value="Debit">Debit Only</option>
+              </select>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table" id="recent-transactions-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-tx-tbody">
+                  <!-- Dynamically Rendered -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. MONEY TRANSFER VIEW -->
+    <section id="transfers-tab" class="view-section" style="display: none;">
+      <div class="transfer-wrapper max-width-card">
+        <div class="glass-panel card-padded">
+          <div class="card-header-styled">
+            <div class="header-icon"><i data-lucide="send"></i></div>
+            <div>
+              <h2>Instant Fund Transfer</h2>
+              <p>Transfer funds securely with instant OTP verification</p>
+            </div>
+          </div>
+
+          <!-- BUSINESS RULES REMINDER BOX -->
+          <div class="business-rules-alert">
+            <p><strong><i data-lucide="alert-circle"></i> QA Business Rules Enforced:</strong></p>
+            <ul>
+              <li>Maximum Single Transfer Limit: <strong>₹50,000</strong></li>
+              <li>Source and Beneficiary accounts cannot be identical.</li>
+              <li>Demo OTP Verification Code: <code>123456</code></li>
+            </ul>
+          </div>
+
+          <form id="form-transfer" class="styled-form">
+            <div class="form-group">
+              <label for="transfer-from">From Account</label>
+              <select id="transfer-from" class="select-styled" required>
+                <option value="ACC4521">Savings Account (XXXX4521) - Balance: ₹1,20,450.00</option>
+                <option value="ACC7890">Current Account (XXXX7890) - Balance: ₹40,000.00</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="transfer-to">Select Beneficiary / Destination Account</label>
+              <select id="transfer-to" class="select-styled" required>
+                <option value="100012345678">Rahul Sharma - DemoBank (XXXX1234)</option>
+                <option value="100098765432">Priya Patel - HDFC Bank (XXXX9876)</option>
+                <option value="200078904321">Self Transfer to Current Account (XXXX7890)</option>
+                <option value="ACC4521">Self Transfer to Savings Account (XXXX4521) [Negative Test]</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="transfer-amount">Transfer Amount (₹)</label>
+              <div class="input-wrapper">
+                <span class="input-prefix">₹</span>
+                <input type="number" id="transfer-amount" placeholder="e.g. 5000" min="1" step="0.01" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="transfer-desc">Remarks / Purpose</label>
+              <input type="text" id="transfer-desc" placeholder="e.g. Monthly House Rent" class="input-styled" required />
+            </div>
+
+            <div class="alert-box alert-error" id="transfer-error-alert" style="display: none;"></div>
+
+            <button type="submit" class="btn-primary btn-block" id="btn-review-transfer">
+              Review Transfer Details <i data-lucide="arrow-right"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BENEFICIARY MANAGEMENT VIEW -->
+    <section id="beneficiaries-tab" class="view-section" style="display: none;">
+      <div class="view-header-flex">
+        <div>
+          <h2>Beneficiary Directory</h2>
+          <p>Manage verified payees for instant money transfers</p>
+        </div>
+        <button class="btn-primary" id="btn-open-add-ben-modal"><i data-lucide="user-plus"></i> Add New Beneficiary</button>
+      </div>
+
+      <div class="beneficiaries-grid" id="beneficiaries-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- 5. BILL PAYMENTS VIEW -->
+    <section id="bills-tab" class="view-section" style="display: none;">
+      <div class="bills-container max-width-card">
+        <div class="glass-panel card-padded">
+          <div class="card-header-styled">
+            <div class="header-icon gold"><i data-lucide="receipt"></i></div>
+            <div>
+              <h2>Utility Bill Payments</h2>
+              <p>Instant bill settlement with zero processing fees</p>
+            </div>
+          </div>
+
+          <form id="form-bill-pay" class="styled-form">
+            <div class="form-group">
+              <label>Select Category</label>
+              <div class="category-grid">
+                <button type="button" class="cat-card active" data-cat="Electricity"><i data-lucide="zap"></i> Electricity</button>
+                <button type="button" class="cat-card" data-cat="Water"><i data-lucide="droplet"></i> Water</button>
+                <button type="button" class="cat-card" data-cat="Mobile"><i data-lucide="smartphone"></i> Mobile Prepaid</button>
+                <button type="button" class="cat-card" data-cat="Internet"><i data-lucide="wifi"></i> Broadband</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="biller-name">Select Biller / Provider</label>
+              <select id="biller-name" class="select-styled" required>
+                <option value="State Electricity Board">State Electricity Board</option>
+                <option value="Adani Electricity">Adani Electricity</option>
+                <option value="Airtel Broadband">Airtel Broadband</option>
+                <option value="Jio Telecom">Jio Telecom</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="consumer-id">Consumer Number / Account ID</label>
+              <input type="text" id="consumer-id" placeholder="e.g. 1029384756" class="input-styled" required value="CONS998811" />
+            </div>
+
+            <div class="form-group">
+              <label for="bill-amount">Bill Amount (₹)</label>
+              <div class="input-wrapper">
+                <span class="input-prefix">₹</span>
+                <input type="number" id="bill-amount" placeholder="e.g. 2300" required value="1850" />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary btn-block">Pay Bill Now <i data-lucide="check-circle"></i></button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. STATEMENTS & REPORTS VIEW -->
+    <section id="statements-tab" class="view-section" style="display: none;">
+      <div class="glass-panel card-padded">
+        <div class="view-header-flex">
+          <div>
+            <h2>Account Statements & Ledger</h2>
+            <p>Filter, view, and export transaction audit records</p>
+          </div>
+          <button class="btn-secondary" id="btn-export-csv"><i data-lucide="download"></i> Export CSV Statement</button>
+        </div>
+
+        <div class="statement-filters glass-panel">
+          <div class="filter-group">
+            <label>Select Account</label>
+            <select id="stmt-account-select" class="select-styled">
+              <option value="ALL">All Accounts</option>
+              <option value="ACC4521">Savings (XXXX4521)</option>
+              <option value="ACC7890">Current (XXXX7890)</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Transaction Type</label>
+            <select id="stmt-type-select" class="select-styled">
+              <option value="ALL">All Types</option>
+              <option value="Credit">Credit</option>
+              <option value="Debit">Debit</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive margin-top-lg">
+          <table class="data-table" id="full-statement-table">
+            <thead>
+              <tr>
+                <th>Reference ID</th>
+                <th>Date & Time</th>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="full-stmt-tbody">
+              <!-- Dynamically Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. ADMIN PORTAL VIEW -->
+    <section id="admin-tab" class="view-section" style="display: none;">
+      <div class="admin-panel glass-panel card-padded">
+        <div class="card-header-styled">
+          <div class="header-icon red"><i data-lucide="shield-alert"></i></div>
+          <div>
+            <h2>BankSphere Admin Control Center</h2>
+            <p>Customer Account Management & System Monitoring</p>
+          </div>
+        </div>
+
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card">
+            <span class="stat-title">Total Registered Customers</span>
+            <h3 class="stat-value" id="admin-stat-customers">3</h3>
+          </div>
+          <div class="admin-stat-card">
+            <span class="stat-title">Active Bank Accounts</span>
+            <h3 class="stat-value" id="admin-stat-accounts">3</h3>
+          </div>
+          <div class="admin-stat-card">
+            <span class="stat-title">System Status</span>
+            <h3 class="stat-value text-emerald">100% Operational</h3>
+          </div>
+        </div>
+
+        <div class="section-title margin-top-lg">
+          <h3>Customer Directory & Account Status Management</h3>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="admin-customer-table">
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Account Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-customer-tbody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: OTP VERIFICATION -->
+  <div class="modal-overlay" id="modal-otp" style="display: none;">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3><i data-lucide="shield-check"></i> Security OTP Verification</h3>
+        <button class="modal-close" id="close-modal-otp">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>An authentication code has been sent to your registered mobile number ending in **3210.</p>
+        <p class="demo-tip">Enter Demo OTP: <code>123456</code></p>
+        
+        <div class="form-group margin-top-md">
+          <label for="otp-input">6-Digit Security OTP</label>
+          <input type="text" id="otp-input" placeholder="123456" maxlength="6" class="input-styled center-text text-lg" required />
+        </div>
+        
+        <div class="alert-box alert-error" id="otp-error-alert" style="display: none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-cancel-otp">Cancel</button>
+        <button class="btn-primary" id="btn-confirm-otp">Verify & Complete Transfer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD BENEFICIARY -->
+  <div class="modal-overlay" id="modal-add-ben" style="display: none;">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3><i data-lucide="user-plus"></i> Add New Beneficiary</h3>
+        <button class="modal-close" id="close-modal-add-ben">&times;</button>
+      </div>
+      <form id="form-add-ben">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="ben-name">Beneficiary Full Name</label>
+            <input type="text" id="ben-name" placeholder="e.g. Suresh Kumar" class="input-styled" required />
+          </div>
+          <div class="form-group">
+            <label for="ben-acc">Account Number</label>
+            <input type="text" id="ben-acc" placeholder="100099887766" class="input-styled" required />
+          </div>
+          <div class="form-group">
+            <label for="ben-bank">Bank Name</label>
+            <input type="text" id="ben-bank" placeholder="e.g. ICICI Bank" class="input-styled" required />
+          </div>
+          <div class="form-group">
+            <label for="ben-ifsc">IFSC Code</label>
+            <input type="text" id="ben-ifsc" placeholder="ICIC0001234" class="input-styled" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-add-ben">Cancel</button>
+          <button type="submit" class="btn-primary">Save Beneficiary</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT IMPORTS -->
+  <script src="./src/js/app.js"></script>
+</body>
+</html>

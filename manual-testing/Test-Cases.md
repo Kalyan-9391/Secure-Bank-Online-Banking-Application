@@ -1,0 +1,25 @@
+# BankSphere - Detailed Manual Test Cases Suite
+
+| TC ID | Module | Test Case Description | Execution Steps | Test Data | Expected Result | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TC_AUTH_001** | Login | Valid customer login | 1. Navigate to URL<br>2. Enter email<br>3. Enter password<br>4. Click Secure Login | `kalyan@banksphere.com`<br>`Password123!` | Successfully logged in. Dashboard displayed with customer name. | PASS |
+| **TC_AUTH_002** | Login | Invalid password attempt | 1. Enter valid email<br>2. Enter wrong password<br>3. Click Login | `kalyan@banksphere.com`<br>`WrongPass999` | Error alert displayed: "Invalid password. 2 attempts remaining". | PASS |
+| **TC_AUTH_003** | Login | Account Lockout after 3 failures | 1. Enter wrong password 3 consecutive times | `kalyan@banksphere.com`<br>`WrongPass` x3 | Error alert: "Account temporarily locked after 3 failed login attempts". Account locked in system. | PASS |
+| **TC_AUTH_004** | Login | Empty fields submission | 1. Leave fields empty<br>2. Click Login | Empty | HTML5 / JS browser validation requires inputs. | PASS |
+| **TC_AUTH_005** | Login | Password Mask Toggle | 1. Enter password<br>2. Click eye icon | `Password123!` | Input type toggles between `password` (masked `••••`) and `text` (plain text). | PASS |
+| **TC_AUTH_006** | Admin | Admin Login portal access | 1. Click Admin tab<br>2. Enter admin credentials<br>3. Click Login | `admin`<br>`Admin@123` | Successfully logged in to Admin Control Center. | PASS |
+| **TC_AUTH_007** | Register | User registration | 1. Click Register tab<br>2. Fill name, email, phone, password<br>3. Submit | `John Doe`<br>`john@test.com` | Account created successfully. Default savings account seeded with ₹10,000 balance. | PASS |
+| **TC_DASH_001** | Dashboard | Total balance calculation | 1. View Dashboard hero balance card | Savings: ₹1,20,450<br>Current: ₹40,000 | Total Available Balance displays exactly ₹1,60,450.00. | PASS |
+| **TC_DASH_002** | Dashboard | Balance Privacy Eye Toggle | 1. Click eye icon on balance card | State toggle | All balance displays masked with `••••••••`. Clicking again restores values. | PASS |
+| **TC_DASH_003** | Dashboard | Account cards layout | 1. Inspect Linked Accounts grid | `ACC4521`<br>`ACC7890` | Cards display Savings & Current account numbers and exact balances. | PASS |
+| **TC_DASH_004** | Dashboard | Transaction search filter | 1. Type "Amazon" in transaction search input | `Amazon` | Ledger filters instantly to display only Amazon India Shopping debit row. | PASS |
+| **TC_XFER_001** | Transfer | Valid Transfer execution | 1. Select Savings ACC4521<br>2. Select Rahul Sharma<br>3. Enter ₹5,000<br>4. Click Review<br>5. Enter OTP `123456`<br>6. Confirm | Amount: ₹5,000<br>OTP: `123456` | Transfer successful. Savings balance reduced to ₹1,15,450.00. Debit txn logged. | PASS |
+| **TC_XFER_002** | Transfer | Insufficient Balance (Negative Test) | 1. Select Savings ACC4521<br>2. Enter amount ₹2,00,000 (exceeds balance)<br>3. Click Review | Amount: ₹2,00,000 | Error alert displayed: "Insufficient balance. Available balance: ₹1,20,450". Transfer rejected. | PASS |
+| **TC_XFER_003** | Transfer | Transfer Limit Rule (Negative Test) | 1. Enter amount ₹60,000 (exceeds ₹50k limit)<br>2. Click Review | Amount: ₹60,000 | Error alert displayed: "Transfer exceeds maximum daily limit of ₹50,000". | PASS |
+| **TC_XFER_004** | Transfer | Same Account Transfer (Negative Test) | 1. Select From: ACC4521<br>2. Select To: ACC4521<br>3. Click Review | From=To=ACC4521 | Error alert displayed: "Source account and beneficiary account cannot be the same". | PASS |
+| **TC_XFER_005** | Transfer | Invalid OTP entry (Negative Test) | 1. Enter valid transfer details<br>2. In OTP modal enter `999999` | OTP: `999999` | Error alert in modal: "Invalid OTP security verification code". Transaction not completed. | PASS |
+| **TC_BEN_001** | Beneficiary | Add new payee | 1. Click Add Beneficiary<br>2. Enter Name, Account, Bank, IFSC<br>3. Save | Name: `Suresh Kumar`<br>Acc: `100099887766` | New beneficiary card added to directory and selectable in transfer dropdown. | PASS |
+| **TC_BEN_002** | Beneficiary | Delete beneficiary | 1. Click delete trash icon on Rahul Sharma card | ID: `BEN101` | Payee removed from list. | PASS |
+| **TC_BILL_001** | Bill Pay | Electricity bill payment | 1. Select Electricity<br>2. Enter Consumer ID<br>3. Enter ₹1,850<br>4. Click Pay Now | Consumer: `CONS998811`<br>Amount: ₹1,850 | Toast notification displayed. Balance deducted by ₹1,850. Bill debit txn logged. | PASS |
+| **TC_STMT_001** | Statements | Export CSV file | 1. Navigate to Statements<br>2. Click Export CSV Statement | CSV trigger | `BankSphere_Statement_....csv` downloaded containing complete transaction ledger. | PASS |
+| **TC_ADM_001** | Admin | Suspend customer account | 1. Login as Admin<br>2. Click Suspend on Rahul Sharma | Customer: `CUST1002` | Account status updated to `Suspended`. Toast notification displayed. | PASS |
